@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result | MediScan AI</title>
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .bg-bubbles li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            bottom: -160px;
+            animation: square 25s infinite;
+            transition-timing-function: linear;
+            border-radius: 50%;
+        }
+
+        .bg-bubbles li:nth-child(1) {
+            left: 10%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+            animation-duration: 17s;
+        }
+
+        .bg-bubbles li:nth-child(2) {
+            left: 20%;
+            width: 40px;
+            height: 40px;
+            animation-delay: 2s;
+            animation-duration: 25s;
+        }
+
+        .bg-bubbles li:nth-child(3) {
+            left: 25%;
+            width: 120px;
+            height: 120px;
+            animation-delay: 4s;
+            animation-duration: 13s;
+        }
+
+        .bg-bubbles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 20s;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .bg-bubbles li:nth-child(5) {
+            left: 70%;
+            width: 50px;
+            height: 50px;
+            animation-delay: 0s;
+            animation-duration: 15s;
+        }
+
+        .bg-bubbles li:nth-child(6) {
+            left: 80%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+            animation-duration: 18s;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes square {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideInDown 0.8s ease-out;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: #fff;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:not(.active):hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-links a i {
+            margin-right: 0.5rem;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+
+        .user-menu span {
+            font-weight: 500;
+        }
+
+        .user-menu i {
+            font-size: 1.5rem;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .breadcrumb i {
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        .breadcrumb .current {
+            font-weight: 600;
+            opacity: 1;
+        }
+
+        /* Result Card */
+        .result-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: fadeInUp 0.8s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .result-header i {
+            font-size: 4rem;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(102, 126, 234, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+            }
+        }
+
+        .result-header h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Image Section */
+        .image-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .image-container {
+            background: #f8f9ff;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid #e1e1e1;
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.1);
+        }
+
+        .image-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .image-label i {
+            font-size: 1.2rem;
+        }
+
+        .analyzed-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .analyzed-image:hover {
+            transform: scale(1.05);
+        }
+
+        .image-meta {
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .image-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* Result Content */
+        .result-content {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border-left: 4px solid #667eea;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .result-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .result-title i {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .result-title h3 {
+            font-size: 1.3rem;
+        }
+
+        .result-text {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid #e1e1e1;
+            overflow-x: auto;
+        }
+
+        .result-text pre {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Analysis Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid #e1e1e1;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.1);
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary, .btn-outline {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-primary::before,
+        .btn-secondary::before,
+        .btn-outline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before,
+        .btn-secondary:hover::before,
+        .btn-outline:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover,
+        .btn-outline:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-primary:active,
+        .btn-secondary:active,
+        .btn-outline:active {
+            transform: translateY(0);
+        }
+
+        /* Share Options */
+        .share-section {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .share-section p {
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .share-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .share-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .share-icon:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px) rotate(360deg);
+        }
+
+        /* Recommendations */
+        .recommendations {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-left: 4px solid #ffc107;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .recommendations h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #856404;
+            margin-bottom: 1rem;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #856404;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+        }
+
+        .recommendations li i {
+            color: #ffc107;
+        }
+
+        /* Print Styles */
+        @media print {
+            .navbar, .breadcrumb, .action-buttons, .share-section, .bg-bubbles {
+                display: none;
+            }
+            
+            .result-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .image-section {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary, .btn-outline {
+                width: 100%;
+            }
+
+            .result-card {
+                padding: 1.5rem;
+            }
+
+            .result-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <ul class="bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar animate__animated animate__fadeInDown">
+        <a href="/" class="logo">
+            <i class="bi bi-shield-shaded"></i>
+            <span>MediScan AI</span>
+        </a>
+        <div class="nav-links">
+            <a href="/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/history"><i class="bi bi-clock-history"></i> History</a>
+            <a href="/profile"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/help"><i class="bi bi-question-circle"></i> Help</a>
+        </div>
+        <div class="user-menu">
+            <i class="bi bi-person-circle"></i>
+            <span id="username">{{ session['user'] }}</span>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Breadcrumb Navigation -->
+        <div class="breadcrumb animate__animated animate__fadeInDown">
+            <a href="/dashboard"><i class="bi bi-house"></i> Dashboard</a>
+            <i class="bi bi-chevron-right"></i>
+            <a href="/history"><i class="bi bi-clock-history"></i> History</a>
+            <i class="bi bi-chevron-right"></i>
+            <span class="current"><i class="bi bi-file-medical"></i> Analysis Result</span>
+        </div>
+
+        <!-- Main Result Card -->
+        <div class="result-card">
+            <div class="result-header">
+                <i class="bi bi-clipboard2-pulse"></i>
+                <h1>Analysis Complete</h1>
+                <p>Your skin analysis has been processed successfully</p>
+            </div>
+
+            <!-- Image Section -->
+            <div class="image-section">
+                <div class="image-container animate__animated animate__fadeInLeft">
+                    <div class="image-label">
+                        <i class="bi bi-image"></i>
+                        <span>Analyzed Image</span>
+                    </div>
+                    <img src="/{{ image }}" alt="Analyzed Skin Image" class="analyzed-image" id="analyzedImage">
+                    <div class="image-meta">
+                        <span><i class="bi bi-calendar"></i> {{ date if date else 'Today' }}</span>
+                        <span><i class="bi bi-clock"></i> {{ time if time else 'Just now' }}</span>
+                        <span><i class="bi bi-eye"></i> High Resolution</span>
+                    </div>
+                </div>
+
+                <div class="image-container animate__animated animate__fadeInRight">
+                    <div class="image-label">
+                        <i class="bi bi-thermometer-half"></i>
+                        <span>Analysis Heatmap</span>
+                    </div>
+                    <img src="/{{ image }}" alt="Analysis Heatmap" class="analyzed-image" style="filter: hue-rotate(90deg) contrast(120%);">
+                    <div class="image-meta">
+                        <span><i class="bi bi-droplet"></i> AI Enhanced</span>
+                        <span><i class="bi bi-graph-up"></i> Pattern Detected</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Content -->
+            <div class="result-content">
+                <div class="result-title">
+                    <i class="bi bi-file-text"></i>
+                    <h3>Detailed Analysis Report</h3>
+                </div>
+                <div class="result-text">
+                    <pre>{{ result }}</pre>
+                </div>
+            </div>
+
+            <!-- Analysis Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                    <div class="metric-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <div class="metric-value">95%</div>
+                    <div class="metric-label">Confidence Score</div>
+                </div>
+                <div class="metric-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                    <div class="metric-icon">
+                        <i class="bi bi-clock"></i>
+                    </div>
+                    <div class="metric-value">2.3s</div>
+                    <div class="metric-label">Processing Time</div>
+                </div>
+                <div class="metric-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                    <div class="metric-icon">
+                        <i class="bi bi-database"></i>
+                    </div>
+                    <div class="metric-value">10k+</div>
+                    <div class="metric-label">Reference Cases</div>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="recommendations">
+                <h4>
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    Recommendations
+                </h4>
+                <ul>
+                    <li>
+                        <i class="bi bi-check-circle"></i>
+                        Consult with a dermatologist for professional evaluation
+                    </li>
+                    <li>
+                        <i class="bi bi-check-circle"></i>
+                        Monitor the area for any changes in size, shape, or color
+                    </li>
+                    <li>
+                        <i class="bi bi-check-circle"></i>
+                        Protect your skin from excessive sun exposure
+                    </li>
+                    <li>
+                        <i class="bi bi-check-circle"></i>
+                        Schedule a follow-up scan in 30 days
+                    </li>
+                </ul>
+                <p style="color: #856404; margin-top: 1rem; font-size: 0.9rem; font-style: italic;">
+                    <i class="bi bi-info-circle"></i>
+                    This analysis is for informational purposes only and should not replace professional medical advice.
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="/dashboard" class="btn-primary">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+                <a href="#" class="btn-secondary" onclick="window.print()">
+                    <i class="bi bi-printer"></i>
+                    Print Report
+                </a>
+                <a href="#" class="btn-secondary" id="downloadBtn">
+                    <i class="bi bi-download"></i>
+                    Download PDF
+                </a>
+                <a href="/dashboard" class="btn-outline">
+                    <i class="bi bi-camera"></i>
+                    New Analysis
+                </a>
+            </div>
+        </div>
+
+        <!-- Share Section -->
+        <div class="share-section">
+            <p>Share this report with your healthcare provider</p>
+            <div class="share-icons">
+                <a href="#" class="share-icon" onclick="shareReport('email')">
+                    <i class="bi bi-envelope"></i>
+                </a>
+                <a href="#" class="share-icon" onclick="shareReport('whatsapp')">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+                <a href="#" class="share-icon" onclick="shareReport('telegram')">
+                    <i class="bi bi-telegram"></i>
+                </a>
+                <a href="#" class="share-icon" onclick="shareReport('copy')">
+                    <i class="bi bi-link"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get current date and time
+        function updateDateTime() {
+            const now = new Date();
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit' };
+            
+            const dateElements = document.querySelectorAll('.image-meta span:first-child');
+            dateElements.forEach(el => {
+                if (el.innerHTML.includes('Today')) {
+                    el.innerHTML = `<i class="bi bi-calendar"></i> ${now.toLocaleDateString(undefined, dateOptions)}`;
+                }
+            });
+            
+            const timeElements = document.querySelectorAll('.image-meta span:nth-child(2)');
+            timeElements.forEach(el => {
+                if (el.innerHTML.includes('Just now')) {
+                    el.innerHTML = `<i class="bi bi-clock"></i> ${now.toLocaleTimeString(undefined, timeOptions)}`;
+                }
+            });
+        }
+
+        // Call on load
+        updateDateTime();
+
+        // Share functionality
+        function shareReport(method) {
+            const result = document.querySelector('.result-text pre').textContent;
+            const imageUrl = document.getElementById('analyzedImage').src;
+            
+            switch(method) {
+                case 'email':
+                    window.location.href = `mailto:?subject=Skin Analysis Report&body=Analysis Result:%0A%0A${encodeURIComponent(result)}%0A%0AView full report at: ${window.location.href}`;
+                    break;
+                case 'whatsapp':
+                    window.open(`https://wa.me/?text=${encodeURIComponent(`Skin Analysis Result: ${result.substring(0, 100)}... View full report at: ${window.location.href}`)}`);
+                    break;
+                case 'telegram':
+                    window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(`Skin Analysis Result: ${result.substring(0, 100)}...`)}`);
+                    break;
+                case 'copy':
+                    navigator.clipboard.writeText(window.location.href).then(() => {
+                        alert('Link copied to clipboard!');
+                    });
+                    break;
+            }
+        }
+
+        // Download PDF functionality
+        document.getElementById('downloadBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            this.innerHTML = '<i class="bi bi-arrow-repeat spinning"></i> Generating PDF...';
+            
+            // Simulate PDF generation (replace with actual PDF generation)
+            setTimeout(() => {
+                this.innerHTML = '<i class="bi bi-check-lg"></i> Downloaded!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="bi bi-download"></i> Download PDF';
+                }, 2000);
+                
+                // Create a printable version
+                const printContent = document.querySelector('.result-card').cloneNode(true);
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Skin Analysis Report</title>
+                            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+                            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+                            <style>
+                                body { font-family: 'Inter', sans-serif; padding: 2rem; }
+                                .print-header { text-align: center; margin-bottom: 2rem; }
+                                .print-footer { text-align: center; margin-top: 2rem; color: #666; font-size: 0.9rem; }
+                                img { max-width: 100%; }
+                                @media print {
+                                    button { display: none; }
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="print-header">
+                                <h1>MediScan AI - Skin Analysis Report</h1>
+                                <p>Generated on ${new Date().toLocaleString()}</p>
+                            </div>
+                            ${printContent.outerHTML}
+                            <div class="print-footer">
+                                <p>This report is generated by AI and should be reviewed by a healthcare professional.</p>
+                                <p>© 2024 MediScan AI. All rights reserved.</p>
+                            </div>
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            }, 1500);
+        });
+
+        // Add spinning animation style
+        const style = document.createElement('style');
+        style.textContent = `
+            .spinning {
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Zoom image on click
+        document.getElementById('analyzedImage').addEventListener('click', function() {
+            this.style.transform = this.style.transform === 'scale(1.5)' ? 'scale(1)' : 'scale(1.5)';
+            this.style.transition = 'transform 0.3s ease';
+            this.style.cursor = 'zoom-in';
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Press 'b' to go back to dashboard
+            if (e.key === 'b' || e.key === 'B') {
+                window.location.href = '/dashboard';
+            }
+            // Press 'p' to print
+            if (e.key === 'p' || e.key === 'P') {
+                window.print();
+            }
+        });
+
+        // Animate metrics on scroll
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.metric-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>HDFS
